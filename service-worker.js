@@ -40,14 +40,17 @@ self.addEventListener("activate", function(event) {
     );
 });
 
+
 self.addEventListener("fetch", function(event) {
     if (event.request.method !== "GET") {
         return;
     }
 
     const requestURL = new URL(event.request.url);
+    const isSameOrigin = requestURL.origin === self.location.origin;
+    const isImage = event.request.destination === "image";
 
-    if (requestURL.origin !== self.location.origin) {
+    if (!isSameOrigin && !isImage) {
         return;
     }
 
@@ -56,6 +59,23 @@ self.addEventListener("fetch", function(event) {
             if (cachedResponse) {
                 return cachedResponse;
             }
+
+            return fetch(event.request).then(function(response) {
+                if (response && (response.ok || response.type === "opaque")) {
+                    return caches.open("art-atlas-images-v1").then(
+                        function(cache) {
+                            cache.put(event.request, response.clone());
+                            return response;
+                        }
+                    );
+                }
+
+                return response;
+            });
+        })
+    );
+});
+
 
             return fetch(event.request);
         })
