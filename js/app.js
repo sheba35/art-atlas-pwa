@@ -510,6 +510,7 @@ var discoverArtworks = [];
 var discoverIndex = 0;
 
 
+
 function loadDiscoverArtworks() {
     var gallery = document.querySelector("#discover-artworks");
 
@@ -517,9 +518,6 @@ function loadDiscoverArtworks() {
         return;
     }
 
-    gallery.textContent = "Finding artworks for you...";
-
-    // Load previously saved artwork data for offline use.
     var savedDiscoverArtworks = [];
 
     try {
@@ -533,6 +531,16 @@ function loadDiscoverArtworks() {
     } catch (error) {
         savedDiscoverArtworks = [];
     }
+
+    // If offline, show saved artworks immediately.
+    if (!navigator.onLine && savedDiscoverArtworks.length > 0) {
+        discoverArtworks = savedDiscoverArtworks;
+        discoverIndex = 0;
+        showDiscoverArtwork();
+        return;
+    }
+
+    gallery.textContent = "Finding artworks for you...";
 
     var randomSkip = Math.floor(Math.random() * 30000);
 
@@ -551,16 +559,12 @@ function loadDiscoverArtworks() {
             return response.json();
         })
         .then(function(data) {
-            var records = data.data || [];
-
-            // Keep artworks with image URLs.
-            records = records.filter(function(item) {
+            var records = (data.data || []).filter(function(item) {
                 return item.images &&
                     item.images.web &&
                     item.images.web.url;
             });
 
-            // Shuffle the artwork selection.
             for (var i = records.length - 1; i > 0; i--) {
                 var j = Math.floor(Math.random() * (i + 1));
                 var temp = records[i];
@@ -568,30 +572,31 @@ function loadDiscoverArtworks() {
                 records[j] = temp;
             }
 
-            // Convert museum records into Art Atlas artwork objects.
             discoverArtworks = records.map(function(item) {
                 return formatArtwork(item);
             }).filter(function(item) {
                 return item !== null;
             });
 
-            // Save artwork data for future offline use.
-            try {
-                localStorage.setItem(
-                    "artAtlasDiscoverArtworks",
-                    JSON.stringify(discoverArtworks)
-                );
-            } catch (error) {
-                console.log("Could not save Discover artworks:", error);
-            }
+            if (discoverArtworks.length > 0) {
+                try {
+                    localStorage.setItem(
+                        "artAtlasDiscoverArtworks",
+                        JSON.stringify(discoverArtworks)
+                    );
+                } catch (error) {
+                    console.log("Could not save artwork data:", error);
+                }
 
-            discoverIndex = 0;
-            showDiscoverArtwork();
+                discoverIndex = 0;
+                showDiscoverArtwork();
+            } else {
+                throw new Error("No usable artwork records returned.");
+            }
         })
         .catch(function(error) {
             console.log("Discover gallery error:", error);
 
-            // Display saved artwork if the API is unavailable.
             if (savedDiscoverArtworks.length > 0) {
                 discoverArtworks = savedDiscoverArtworks;
                 discoverIndex = 0;
