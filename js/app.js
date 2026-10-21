@@ -509,15 +509,30 @@ renderSavedArtworks();
 var discoverArtworks = [];
 var discoverIndex = 0;
 
+
 function loadDiscoverArtworks() {
     var gallery = document.querySelector("#discover-artworks");
-    var counter = document.querySelector("#art-wheel-counter");
 
     if (!gallery) {
         return;
     }
 
     gallery.textContent = "Finding artworks for you...";
+
+    // Load previously saved artwork data for offline use.
+    var savedDiscoverArtworks = [];
+
+    try {
+        savedDiscoverArtworks = JSON.parse(
+            localStorage.getItem("artAtlasDiscoverArtworks") || "[]"
+        );
+
+        if (!Array.isArray(savedDiscoverArtworks)) {
+            savedDiscoverArtworks = [];
+        }
+    } catch (error) {
+        savedDiscoverArtworks = [];
+    }
 
     var randomSkip = Math.floor(Math.random() * 30000);
 
@@ -553,20 +568,39 @@ function loadDiscoverArtworks() {
                 records[j] = temp;
             }
 
+            // Convert museum records into Art Atlas artwork objects.
             discoverArtworks = records.map(function(item) {
                 return formatArtwork(item);
             }).filter(function(item) {
                 return item !== null;
             });
 
+            // Save artwork data for future offline use.
+            try {
+                localStorage.setItem(
+                    "artAtlasDiscoverArtworks",
+                    JSON.stringify(discoverArtworks)
+                );
+            } catch (error) {
+                console.log("Could not save Discover artworks:", error);
+            }
+
             discoverIndex = 0;
             showDiscoverArtwork();
         })
         .catch(function(error) {
-            gallery.textContent =
-                "We couldn't load artworks. Please refresh to try again.";
-
             console.log("Discover gallery error:", error);
+
+            // Display saved artwork if the API is unavailable.
+            if (savedDiscoverArtworks.length > 0) {
+                discoverArtworks = savedDiscoverArtworks;
+                discoverIndex = 0;
+                showDiscoverArtwork();
+            } else {
+                gallery.textContent =
+                    "No saved artworks are available offline yet. " +
+                    "Reconnect to the internet to load artworks.";
+            }
         });
 }
 
