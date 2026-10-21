@@ -1,0 +1,438 @@
+
+/* ART ATLAS - PWA STYLES */
+
+:root {
+    --cream: #f5f0e8;
+    --paper: #fffdf8;
+    --green: #283c32;
+    --ink: #292720;
+    --muted: #77766e;
+    --line: #ded8ce;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 24px;
+}
+
+body {
+    margin: 0;
+    padding-bottom: 100px;
+    background: var(--cream);
+    color: var(--ink);
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: 1.5;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button,
+input {
+    font: inherit;
+}
+
+/* APP HEADER */
+
+.app-header {
+    padding: 24px 22px 20px;
+    border-bottom: 1px solid var(--line);
+}
+
+.brand {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 30px;
+    font-weight: bold;
+    letter-spacing: -1px;
+}
+
+.brand-period {
+    color: #a15b39;
+}
+
+.tagline {
+    margin: 4px 0 0;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+/* MAIN CONTENT */
+
+main {
+    width: 100%;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 24px 22px;
+}
+
+.app-section {
+    margin-bottom: 44px;
+}
+
+.eyebrow {
+    margin-bottom: 12px;
+    color: #7b553e;
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+h1,
+h2 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-weight: normal;
+    line-height: 1.15;
+}
+
+h1 {
+    max-width: 450px;
+    margin: 0 0 14px;
+    font-size: clamp(36px, 8vw, 54px);
+    letter-spacing: -1.5px;
+}
+
+h2 {
+    margin: 0 0 18px;
+    font-size: 28px;
+}
+
+.app-section > p:not(.eyebrow) {
+    color: var(--muted);
+    font-size: 15px;
+}
+
+/* SEARCH */
+
+#search-form {
+    margin-top: 22px;
+}
+
+#search-form label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.search-row {
+    display: flex;
+    gap: 8px;
+}
+
+.search-row input {
+    width: 100%;
+    min-width: 0;
+    padding: 13px;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: var(--paper);
+}
+
+.search-row button {
+    padding: 12px 16px;
+    border: 0;
+    border-radius: 6px;
+    background: var(--green);
+    color: white;
+    cursor: pointer;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible {
+    outline: 3px solid #a15b39;
+    outline-offset: 3px;
+}
+
+/* ARTWORK AND SAVED COLLECTION AREAS */
+
+#artwork-results,
+#saved-artworks {
+    margin-top: 18px;
+}
+
+#artwork-results > p,
+#saved-artworks > p {
+    padding: 18px;
+    border: 1px dashed var(--line);
+    border-radius: 8px;
+    color: var(--muted);
+    font-size: 14px;
+}
+
+/* BOTTOM APP NAVIGATION */
+
+.bottom-nav {
+    position: fixed;
+    z-index: 10;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    justify-content: space-around;
+    gap: 4px;
+    padding: 12px 8px;
+    padding-bottom: max(12px, env(safe-area-inset-bottom));
+    border-top: 1px solid var(--line);
+    background: var(--paper);
+}
+
+.nav-link {
+    flex: 1;
+    padding: 10px 4px;
+    border-radius: 6px;
+    color: var(--muted);
+    text-align: center;
+    font-size: 12px;
+}
+
+.nav-link.active {
+    background: var(--green);
+    color: white;
+}
+
+/* LARGER SCREENS */
+
+@media (min-width: 700px) {
+    .app-header {
+        padding-right: max(32px, calc((100% - 900px) / 2));
+        padding-left: max(32px, calc((100% - 900px) / 2));
+    }
+
+    main {
+        padding: 42px 32px;
+    }
+
+    .bottom-nav {
+        right: auto;
+        bottom: 20px;
+        left: 50%;
+        width: min(480px, calc(100% - 32px));
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        transform: translateX(-50%);
+        box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+    }
+}
+
+/* ARTWORK SEARCH RESULTS */
+
+#artwork-results {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.artwork-card {
+    min-width: 0;
+    overflow: hidden;
+    padding: 10px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--paper);
+}
+
+.artwork-card img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    border-radius: 5px;
+    background: var(--cream);
+}
+
+.artwork-card h3 {
+    margin: 12px 0 6px;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 17px;
+    font-weight: normal;
+    line-height: 1.3;
+}
+
+.artwork-card p {
+    margin: 4px 0;
+    color: var(--muted);
+    font-size: 12px;
+    overflow-wrap: anywhere;
+}
+
+@media (min-width: 600px) {
+    #artwork-results {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+/* ARTWORK PHOTOS */
+
+.artwork-image {
+    display: block;
+    width: 100%;
+    height: 220px;
+    object-fit: contain;
+    background: #eee8de;
+    border-radius: 8px;
+    margin-bottom: 14px;
+}
+.artwork-image[hidden] {
+    display: none;
+}
+
+/* Artwork collection buttons */
+.artwork-card button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    margin-top: 16px;
+    padding: 12px 16px;
+    border: 1px solid #283c32;
+    border-radius: 8px;
+    background-color: #283c32;
+    color: #fffdf8;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    cursor: pointer;
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+/* Hover effect for saving */
+.artwork-card button:hover:not(:disabled) {
+    background-color: #3c5648;
+    border-color: #3c5648;
+    transform: translateY(-1px);
+}
+
+/* Keyboard accessibility */
+.artwork-card button:focus-visible {
+    outline: 3px solid #c9a96e;
+    outline-offset: 3px;
+}
+
+/* Saved state */
+.artwork-card button:disabled {
+    background-color: #e8ede7;
+    border-color: #d5ddd4;
+    color: #3c5648;
+    cursor: default;
+    opacity: 1;
+}
+
+/* Remove button */
+.artwork-card button.remove-artwork {
+    background-color: transparent;
+    border-color: #ded8ce;
+    color: #77766e;
+}
+
+.artwork-card button.remove-artwork:hover {
+    background-color: #f5f0e8;
+    border-color: #b9a99a;
+    color: #6b4638;
+}
+
+
+/* Discover art wheel */
+.art-wheel {
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr) 44px;
+    align-items: center;
+    gap: 12px;
+    margin: 24px 0 12px;
+}
+
+.art-wheel-content {
+    min-width: 0;
+    max-width: 480px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+/* Feature one artwork at a time */
+.art-wheel-content .artwork-card {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 16px;
+    border-radius: 12px;
+}
+
+/* Give the featured artwork room to shine */
+.art-wheel-content .artwork-image {
+    width: 100%;
+    height: 300px;
+    object-fit: contain;
+    background: #eee8de;
+}
+
+/* Circular arrow controls */
+.wheel-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 1px solid #ded8ce;
+    border-radius: 50%;
+    background: #fffdf8;
+    color: #283c32;
+    font-size: 25px;
+    line-height: 1;
+    cursor: pointer;
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.wheel-arrow:hover {
+    background: #283c32;
+    color: #fffdf8;
+    transform: scale(1.05);
+}
+
+.wheel-arrow:focus-visible {
+    outline: 3px solid #c9a96e;
+    outline-offset: 3px;
+}
+
+.art-wheel-counter {
+    text-align: center;
+    color: #77766e;
+    font-size: 13px;
+    margin-top: 12px;
+}
+
+@media (max-width: 480px) {
+    .art-wheel {
+        grid-template-columns: 36px minmax(0, 1fr) 36px;
+        gap: 6px;
+    }
+
+    .wheel-arrow {
+        width: 36px;
+        height: 36px;
+        font-size: 21px;
+    }
+
+    .art-wheel-content .artwork-image {
+        height: 220px;
+    }
+
+    .art-wheel-content .artwork-card {
+        padding: 10px;
+    }
+}
+

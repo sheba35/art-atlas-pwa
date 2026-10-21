@@ -1,0 +1,88 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#283c32">
+    <meta name="description" content="Discover artwork, explore artists, and build your own art collection.">
+
+    <title>Art Atlas</title>
+
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header class="app-header">
+        <a href="#" class="brand" aria-label="Art Atlas home">
+            Art Atlas<span class="brand-period">.</span>
+        </a>
+        <p class="tagline">A pocket museum for the curious.</p>
+    </header>
+
+    <main id="app-content">
+<section id="discover" class="app-section">
+    <p class="eyebrow">YOUR DAILY DOSE OF ART</p>
+    <h1>Discover something beautiful.</h1>
+    <p>Take a moment to discover something new.</p>
+
+    <div class="art-wheel">
+        <button
+            type="button"
+            id="art-previous"
+            class="wheel-arrow"
+            aria-label="Previous artwork"
+        >&#8592;</button>
+
+        <div id="discover-artworks" class="art-wheel-content"
+             aria-live="polite">
+            <p>Finding artworks for you...</p>
+        </div>
+
+        <button
+            type="button"
+            id="art-next"
+            class="wheel-arrow"
+            aria-label="Next artwork"
+        >&#8594;</button>
+    </div>
+
+    <p id="art-wheel-counter" class="art-wheel-counter"></p>
+</section>
+<section id="explore" class="app-section">
+            <h2>Explore the collection</h2>
+            <form id="search-form">
+                <label for="art-search">Search artworks or artists</label>
+                <div class="search-row">
+                    <input
+                        type="search"
+                        id="art-search"
+                        placeholder="Try “Claude Monet”"
+                    >
+                    <button type="submit">Search</button>
+                </div>
+            </form>
+            <div id="artwork-results" aria-live="polite">
+                <p>Your artwork discoveries will appear here.</p>
+            </div>
+        </section>
+
+        <section id="collection" class="app-section">
+            <h2>My Collection</h2>
+            <p>Your saved artworks will appear here.</p>
+            <div id="saved-artworks"></div>
+        </section>
+    </main>
+
+    <nav class="bottom-nav" aria-label="Main navigation">
+        <a href="#discover" class="nav-link active" aria-current="page">
+            Discover
+        </a>
+        <a href="#explore" class="nav-link">Explore</a>
+        <a href="#collection" class="nav-link">My Collection</a>
+    </nav>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
+
