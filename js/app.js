@@ -511,6 +511,7 @@ var discoverIndex = 0;
 
 
 
+
 function loadDiscoverArtworks() {
     var gallery = document.querySelector("#discover-artworks");
 
@@ -532,7 +533,6 @@ function loadDiscoverArtworks() {
         savedDiscoverArtworks = [];
     }
 
-    // If offline, show saved artworks immediately.
     if (!navigator.onLine && savedDiscoverArtworks.length > 0) {
         discoverArtworks = savedDiscoverArtworks;
         discoverIndex = 0;
@@ -546,16 +546,13 @@ function loadDiscoverArtworks() {
 
     var apiUrl =
         "https://openaccess-api.clevelandart.org/api/artworks/" +
-        "?has_image=1" +
-        "&skip=" + randomSkip +
-        "&limit=30";
+        "?has_image=1&skip=" + randomSkip + "&limit=30";
 
     fetch(apiUrl)
         .then(function(response) {
             if (!response.ok) {
                 throw new Error("Could not load artworks.");
             }
-
             return response.json();
         })
         .then(function(data) {
@@ -578,21 +575,41 @@ function loadDiscoverArtworks() {
                 return item !== null;
             });
 
-            if (discoverArtworks.length > 0) {
-                try {
-                    localStorage.setItem(
-                        "artAtlasDiscoverArtworks",
-                        JSON.stringify(discoverArtworks)
-                    );
-                } catch (error) {
-                    console.log("Could not save artwork data:", error);
-                }
+            if (discoverArtworks.length === 0) {
+                throw new Error("No usable artworks found.");
+            }
 
+            localStorage.setItem(
+                "artAtlasDiscoverArtworks",
+                JSON.stringify(discoverArtworks)
+            );
+
+            // Download and cache the actual image files.
+            return caches.open("art-atlas-images-v1").then(function(cache) {
+                var imageRequests = discoverArtworks.map(function(artwork) {
+                    return fetch(artwork.imageUrl)
+                        .then(function(response) {
+                            if (response.ok || response.type === "opaque") {
+                                return cache.put(
+                                    artwork.imageUrl,
+                                    response
+                                );
+                            }
+                        })
+                        .catch(function(error) {
+                            console.log(
+                                "Could not cache image:",
+                                artwork.imageUrl,
+                                error
+                            );
+                        });
+                });
+
+                return Promise.all(imageRequests);
+            }).then(function() {
                 discoverIndex = 0;
                 showDiscoverArtwork();
-            } else {
-                throw new Error("No usable artwork records returned.");
-            }
+            });
         })
         .catch(function(error) {
             console.log("Discover gallery error:", error);
@@ -608,6 +625,7 @@ function loadDiscoverArtworks() {
             }
         });
 }
+
 
 function showDiscoverArtwork() {
     var gallery = document.querySelector("#discover-artworks");
