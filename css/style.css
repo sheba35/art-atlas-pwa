@@ -2,7 +2,7 @@
 /* ART ATLAS - PWA STYLES */
 
 :root {
-    --cream: #f5f0e8;
+    --cream: #EDE5D8;
     --paper: #fffdf8;
     --green: #283c32;
     --ink: #292720;
@@ -338,7 +338,7 @@ input:focus-visible {
 }
 
 .artwork-card button.remove-artwork:hover {
-    background-color: #f5f0e8;
+    background-color: #EDE5D8;
     border-color: #b9a99a;
     color: #6b4638;
 }
